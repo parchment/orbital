@@ -52,70 +52,53 @@ body {
     position: absolute;
     border-radius: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    left: 50%;
 }
 
 /* Mercury */
 #mercury-orbit {
     width: 100px;
     height: 100px;
-    animation: orbit 3s linear infinite;
 }
 
 #mercury {
     width: var(--mercury-size);
     height: var(--mercury-size);
     background: var(--mercury-color);
-    left: 100%;
 }
 
 /* Venus */
 #venus-orbit {
     width: 180px;
     height: 180px;
-    animation: orbit 7s linear infinite;
 }
 
 #venus {
     width: var(--venus-size);
     height: var(--venus-size);
     background: var(--venus-color);
-    left: 100%;
 }
 
 /* Earth */
 #earth-orbit {
     width: 260px;
     height: 260px;
-    animation: orbit 12s linear infinite;
 }
 
 #earth {
     width: var(--earth-size);
     height: var(--earth-size);
     background: var(--earth-color);
-    left: 100%;
 }
 
 /* Mars */
 #mars-orbit {
     width: 340px;
     height: 340px;
-    animation: orbit 22s linear infinite;
 }
 
 #mars {
     width: var(--mars-size);
     height: var(--mars-size);
     background: var(--mars-color);
-    left: 100%;
-}
-
-@keyframes orbit {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
 }

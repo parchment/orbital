@@ -4,15 +4,15 @@ A web-based visualization of our solar system built with plain HTML, CSS, and mi
 
 ## Current State
 
-Version 0.1.2 implements:
+Version 0.1.3 implements:
 - Improved project structure with separate CSS and JS files
 - CSS variables for easier customization
-- Basic JavaScript initialization
+- JavaScript-based orbital motion system
+- Precise timing control using requestAnimationFrame
 - Inner planets (Mercury through Mars)
-- Simplified circular orbits
-- Basic planetary motion using CSS animations
+- Groundwork for elliptical orbits
 - Relative orbit distances (not to scale)
-- Minimal dependencies - pure HTML/CSS implementation
+- Minimal dependencies - pure HTML/CSS/JS implementation
 
 ## Directory Structure
 ```plaintext
@@ -29,9 +29,10 @@ orbital/
 ## Project Goals
 
 ### Accuracy Features
+- [x] Basic circular orbital motion
 - [ ] Complete solar system (all planets + dwarf planets)
 - [ ] Accurate relative distances between orbits
-- [ ] Elliptical orbits (using JavaScript for proper Kepler motion)
+- [ ] Elliptical orbits (prepared with new JS animation system)
 - [ ] Correct orbital periods and speeds
 - [ ] Accurate planet sizes (with toggle for enhanced visibility)
 - [ ] Proper orbital inclinations and eccentricities
@@ -64,12 +65,15 @@ orbital/
 ### Current Approach
 The current implementation uses:
 - HTML structure with nested elements for orbits and planets
-- CSS transforms and animations for orbital motion
-- CSS variables for maintainable scaling
-- Minimal external dependencies
+- CSS for styling and visual properties
+- JavaScript-based animation system for precise orbital motion
+- CSS variables for maintainable styling
+- requestAnimationFrame for smooth animations
+- Proper delta time calculations for consistent motion
+- Object-oriented design with Planet and SolarSystem classes
 
 ### Planned Technical Features
-- JavaScript for accurate elliptical orbits
+- Implementation of Kepler's laws for elliptical orbits
 - Modular code structure for easy expansion
 - Configuration system for switching between ideal/accurate modes
 - Responsive design for various screen sizes
