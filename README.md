@@ -4,16 +4,15 @@ A web-based visualization of our solar system built with plain HTML, CSS, and mi
 
 ## Current State
 
-Version 0.1.4 implements:
-- Improved project structure with separate CSS and JS files
-- CSS variables for easier customization
-- JavaScript-based orbital motion system
-- Precise timing control using requestAnimationFrame
-- Inner planets (Mercury through Mars)
-- Groundwork for elliptical orbits
-- Relative orbit distances (not to scale)
-- Minimal dependencies - pure HTML/CSS/JS implementation
-- Mode toggle infrastructure for switching between simple/realistic views
+Version 0.2.0 implements:
+- Refactored codebase for better mode switching and configuration
+- Centralized configuration system for different view modes
+- Proper astronomical time scaling
+- Separate visual and time controls
+- Enhanced planet property management
+- Groundwork for elliptical orbits with eccentricity values
+- All inner planets (Mercury through Mars)
+- Mode toggle between simple and realistic views
 
 ## Directory Structure
 ```plaintext
@@ -31,10 +30,10 @@ orbital/
 
 ### Accuracy Features
 - [x] Basic circular orbital motion
+- [x] Correct orbital periods and speeds
 - [ ] Complete solar system (all planets + dwarf planets)
 - [ ] Accurate relative distances between orbits
-- [ ] Elliptical orbits (prepared with new JS animation system)
-- [ ] Correct orbital periods and speeds
+- [ ] Elliptical orbits (groundwork complete)
 - [ ] Accurate planet sizes (with toggle for enhanced visibility)
 - [ ] Proper orbital inclinations and eccentricities
 - [ ] Planetary axial tilts
@@ -47,7 +46,7 @@ orbital/
 - [ ] "Zoom to detail" feature for examining moon systems
 
 ### Interactive Features
-- [ ] Toggle between idealized (circular) and realistic (elliptical) orbits
+- [x] Toggle between idealized (circular) and realistic modes
 - [ ] Scale controls for distance/size representation
 - [ ] Time controls (pause, speed up, slow down)
 - [ ] Information panels for celestial bodies
@@ -63,22 +62,16 @@ orbital/
 
 ## Technical Implementation
 
-### Current Approach
-The current implementation uses:
-- HTML structure with nested elements for orbits and planets
-- CSS for styling and visual properties
-- JavaScript-based animation system for precise orbital motion
-- CSS variables for maintainable styling
-- requestAnimationFrame for smooth animations
-- Proper delta time calculations for consistent motion
-- Object-oriented design with Planet and SolarSystem classes
-
-### Planned Technical Features
-- Implementation of Kepler's laws for elliptical orbits
-- Modular code structure for easy expansion
-- Configuration system for switching between ideal/accurate modes
-- Responsive design for various screen sizes
-- Performance optimizations for complex calculations
+### Version 0.2.0 Changes
+The current implementation adds:
+- Centralized configuration system via VIEW_MODES object
+- Astronomical time scaling with TIME_SCALE constants
+- Enhanced Planet class with mode-aware properties
+- New TimeController class for simulation management
+- Separation of visual and orbital properties
+- Mode-specific configurations for planet characteristics
+- Proper orbital period relationships
+- Eccentricity values for future elliptical orbits
 
 ## Real-World Accuracy Notes
 
