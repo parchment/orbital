@@ -1,10 +1,38 @@
 /**
- * Orbital Solar System v0.2.2
- * Added smooth transitions between modes and speed control
+ * Orbital Solar System v0.2.3
+ * Added SVG-based elliptical orbit paths
  */
 
-const MIN_EARTH_ORBIT_SECONDS = 240; // 4 minutes per orbit
-const MAX_EARTH_ORBIT_SECONDS = 12;  // 12 seconds per orbit
+const MIN_EARTH_ORBIT_SECONDS = 240;
+const MAX_EARTH_ORBIT_SECONDS = 12;
+
+const ORBITAL_PARAMETERS = {
+    mercury: {
+        eccentricity: 0.206,
+        inclination: 7.0,
+        longitudeOfPerihelion: 77.45,
+        meanLongitude: 252.25
+    },
+    venus: {
+        eccentricity: 0.007,
+        inclination: 3.4,
+        longitudeOfPerihelion: 131.53,
+        meanLongitude: 181.98
+    },
+    earth: {
+        eccentricity: 0.017,
+        inclination: 0.0,
+        longitudeOfPerihelion: 102.94,
+        meanLongitude: 100.46
+    },
+    mars: {
+        eccentricity: 0.093,
+        inclination: 1.85,
+        longitudeOfPerihelion: 336.04,
+        meanLongitude: 355.45
+    }
+};
+
 
 function calculateTimeScale(sliderValue) {
     // Linear interpolation between min and max orbit times
@@ -104,52 +132,217 @@ class Planet {
         this.element = document.getElementById(name);
         this.orbitElement = document.getElementById(`${name}-orbit`);
         this.baseConfig = config;
-        this.element.style.opacity = '1'; // Ensure initial opacity is set
+        this.element.style.opacity = '1';
+        
+        // Create SVG for orbit paths
+        this.createOrbitPaths();
+        
         this.updateMode(mode);
         this.angle = Math.random() * Math.PI * 2;
         this.lastUpdate = performance.now();
+        this.meanAnomaly = 0;
+    }
+
+    createOrbitPaths() {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+        `;
+        
+        // Create a single path that we'll animate between states
+        this.orbitPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        this.orbitPath.style.cssText = `
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1;
+            transition: d 0.8s ease-in-out;
+        `;
+        
+        svg.appendChild(this.orbitPath);
+        this.orbitElement.appendChild(svg);
+    }
+
+    calculateOrbitPoints(useElliptical = false) {
+        const points = [];
+        const steps = 360;
+        
+        if (useElliptical) {
+            // Calculate elliptical orbit points
+            for (let i = 0; i < steps; i++) {
+                const meanAnomaly = (i / steps) * 2 * Math.PI;
+                const E = this.solveKeplersEquation(meanAnomaly, this.eccentricity);
+                
+                const cosE = Math.cos(E);
+                const sinE = Math.sin(E);
+                const trueAnomaly = Math.atan2(
+                    Math.sqrt(1 - this.eccentricity * this.eccentricity) * sinE,
+                    cosE - this.eccentricity
+                );
+                
+                const r = this.semiMajorAxis * (1 - this.eccentricity * cosE);
+                
+                let x = r * Math.cos(trueAnomaly);
+                let y = r * Math.sin(trueAnomaly);
+                
+                // Apply orbit rotation
+                const rotatedX = x * Math.cos(this.longitudeOfPerihelion) - 
+                               y * Math.sin(this.longitudeOfPerihelion);
+                const rotatedY = x * Math.sin(this.longitudeOfPerihelion) + 
+                               y * Math.cos(this.longitudeOfPerihelion);
+                
+                // Apply inclination
+                const finalY = rotatedY * Math.cos(this.inclination);
+                
+                points.push([rotatedX, finalY]);
+            }
+        } else {
+            // Calculate circular orbit points
+            for (let i = 0; i < steps; i++) {
+                const angle = (i / steps) * 2 * Math.PI;
+                const x = Math.cos(angle) * this.orbitRadius;
+                const y = Math.sin(angle) * this.orbitRadius;
+                points.push([x, y]);
+            }
+        }
+        
+        return points;
+    }
+
+    updateOrbitPath() {
+        // Calculate both paths
+        const circularPoints = this.calculateOrbitPoints(false);
+        const ellipticalPoints = this.calculateOrbitPoints(true);
+        
+        // Store path data for both orbits
+        const center = this.useElliptical ? 
+            this.semiMajorAxis : 
+            this.orbitRadius;
+        
+        const points = this.useElliptical ? ellipticalPoints : circularPoints;
+        
+        // Convert points to SVG path
+        const d = points.map((point, i) => {
+            const [x, y] = point;
+            return `${i === 0 ? 'M' : 'L'} ${x + center} ${y + center}`;
+        }).join(' ') + 'Z';
+        
+        // Update the path with a smooth transition
+        this.orbitPath.setAttribute('d', d);
     }
 
     updateMode(mode) {
         const planetConfig = mode.planets[this.name];
+        const orbitalParams = ORBITAL_PARAMETERS[this.name];
+        
         this.size = planetConfig.baseSize * mode.planetScale;
         this.orbitRadius = planetConfig.baseOrbitRadius * mode.orbitScale;
         this.period = planetConfig.period;
-        this.eccentricity = planetConfig.eccentricity || 0;
+        this.eccentricity = orbitalParams.eccentricity;
+        this.inclination = orbitalParams.inclination * Math.PI / 180;
+        this.longitudeOfPerihelion = orbitalParams.longitudeOfPerihelion * Math.PI / 180;
         this.color = planetConfig.color;
-        this.basePeriod = planetConfig.period;
+        this.useElliptical = mode.useEllipticalOrbits;
+
+        // Calculate orbital parameters
+        this.semiMajorAxis = this.orbitRadius;
+        this.semiMinorAxis = this.semiMajorAxis * Math.sqrt(1 - this.eccentricity * this.eccentricity);
+        this.focalPoint = this.semiMajorAxis * this.eccentricity;
 
         requestAnimationFrame(() => {
-            // Update size and appearance
+            // Update planet appearance
             this.element.style.width = `${this.size}px`;
             this.element.style.height = `${this.size}px`;
             this.element.style.background = this.color;
             
-            // Update orbit appearance
-            const orbitSize = this.orbitRadius * 2;
+            // Update orbit container size
+            const orbitSize = Math.max(
+                this.semiMajorAxis * 2,
+                this.semiMinorAxis * 2
+            );
             this.orbitElement.style.width = `${orbitSize}px`;
             this.orbitElement.style.height = `${orbitSize}px`;
-            this.orbitElement.style.display = mode.showOrbits ? 'block' : 'none';
-            this.orbitElement.style.borderStyle = mode.useEllipticalOrbits ? 'dashed' : 'solid';
-            this.orbitElement.style.borderColor = mode.useEllipticalOrbits ? 
-                'rgba(255, 100, 100, 0.2)' : 
-                'rgba(255, 255, 255, 0.1)';
+            this.orbitElement.style.transform = 'translate(-50%, -50%)';
+            this.orbitElement.style.border = 'none';
+            
+            // Update orbit path with transition
+            this.updateOrbitPath();
+            this.orbitPath.style.display = mode.showOrbits ? '' : 'none';
         });
     }
 
     updatePosition() {
-        const x = Math.cos(this.angle) * this.orbitRadius;
-        const y = Math.sin(this.angle) * this.orbitRadius;
-        this.element.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        if (this.useElliptical) {
+            // Solve Kepler's equation to get eccentric anomaly
+            const E = this.solveKeplersEquation(this.meanAnomaly, this.eccentricity);
+            
+            // Convert eccentric anomaly to true anomaly
+            const cosE = Math.cos(E);
+            const sinE = Math.sin(E);
+            const trueAnomaly = Math.atan2(
+                Math.sqrt(1 - this.eccentricity * this.eccentricity) * sinE,
+                cosE - this.eccentricity
+            );
+            
+            // Calculate radius vector
+            const r = this.semiMajorAxis * (1 - this.eccentricity * cosE);
+            
+            // Calculate position
+            let x = r * Math.cos(trueAnomaly);
+            let y = r * Math.sin(trueAnomaly);
+            
+            // Apply orbit rotation
+            const rotatedX = x * Math.cos(this.longitudeOfPerihelion) - 
+                           y * Math.sin(this.longitudeOfPerihelion);
+            const rotatedY = x * Math.sin(this.longitudeOfPerihelion) + 
+                           y * Math.cos(this.longitudeOfPerihelion);
+            
+            // Apply inclination
+            const finalY = rotatedY * Math.cos(this.inclination);
+            
+            this.element.style.transform = `translate(calc(-50% + ${rotatedX}px), calc(-50% + ${finalY}px))`;
+        } else {
+            // Circular orbit
+            const x = Math.cos(this.angle) * this.orbitRadius;
+            const y = Math.sin(this.angle) * this.orbitRadius;
+            this.element.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        }
+    }
+
+    solveKeplersEquation(meanAnomaly, e, maxIterations = 10) {
+        let E = meanAnomaly;
+        
+        // Newton's method to solve Kepler's equation
+        for (let i = 0; i < maxIterations; i++) {
+            const delta = (E - e * Math.sin(E) - meanAnomaly) / (1 - e * Math.cos(E));
+            E -= delta;
+            if (Math.abs(delta) < 1e-6) break;
+        }
+        
+        return E;
     }
 
     update(now) {
         const delta = (now - this.lastUpdate) / 1000;
         this.lastUpdate = now;
         
-        const angleSpeed = (2 * Math.PI) / this.period;
         const scaledDelta = this.timeController ? this.timeController.getDelta(delta) : delta;
-        this.angle += angleSpeed * scaledDelta;
+        
+        if (this.useElliptical) {
+            // Update mean anomaly (constant angular velocity in time)
+            const meanMotion = (2 * Math.PI) / this.period;
+            this.meanAnomaly += meanMotion * scaledDelta;
+            this.meanAnomaly %= (2 * Math.PI);
+        } else {
+            // Constant angular velocity for circular orbits
+            const angleSpeed = (2 * Math.PI) / this.period;
+            this.angle += angleSpeed * scaledDelta;
+        }
         
         this.updatePosition();
     }
