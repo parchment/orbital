@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="v0.2.0">
+    <meta name="description" content="v0.2.2">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orbital</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-		<div class="mode-switch">
-        <input type="checkbox" id="orbit-mode" class="mode-toggle">
-        <label for="orbit-mode">Simple View</label>
+		<div class="controls">
+        <div class="mode-switch">
+            <input type="checkbox" id="orbit-mode" class="mode-toggle">
+            <label for="orbit-mode">Simple View</label>
+        </div>
+        <div class="speed-control">
+            <input type="range" id="speed-slider" min="0" max="100" value="50" class="speed-slider">
+            <label id="speed-label">1x Speed</label>
+        </div>
     </div>
     <div class="solar-system">
         <div class="sun"></div>

@@ -9,15 +9,58 @@ body {
     overflow: hidden;
 }
 
-.mode-switch {
+.controls {
     position: fixed;
     top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     color: rgba(255, 255, 255, 0.7);
     font-family: system-ui, -apple-system, sans-serif;
     font-size: 14px;
+}
+
+.mode-switch {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.speed-slider {
+    appearance: none;
+    width: 120px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.speed-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.speed-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+#speed-label {
+    min-width: 60px;
 }
 
 .mode-toggle {

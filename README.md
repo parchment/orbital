@@ -1,15 +1,16 @@
 # Orbital 💫
 
-A web-based visualization of our solar system built with plain HTML, CSS, and minimal JavaScript. The project aims to create both idealized and accurate representations of planetary motions, with interactive features for exploration and education.
+A web-based visualization of our solar system built with plain HTML, CSS, and JavaScript. The project aims to create both idealized and accurate representations of planetary motions, with interactive features for exploration and education. The visualization uses time scaling optimized for visual clarity rather than astronomical accuracy, allowing users to observe planetary motions at comfortable speeds while maintaining correct relative orbital periods.
 
 ## Current State
 
-Version 0.2.1 implements:
-- Refactored codebase for better mode switching and configuration
+Version 0.2.2 implements:
+- Interactive time control slider for orbit speed adjustment
+- Visualization-focused time scaling (4 minutes to 12 seconds per Earth orbit)
+- Linear speed progression for intuitive control
+- Time display in minutes/seconds per orbit
 - Smooth transitions between view modes with coordinated animations
 - Centralized configuration system for different view modes
-- Proper astronomical time scaling
-- Separate visual and time controls
 - Enhanced planet property management
 - Groundwork for elliptical orbits with eccentricity values
 - All inner planets (Mercury through Mars)
@@ -50,11 +51,13 @@ orbital/
 ### Interactive Features
 - [x] Toggle between idealized (circular) and realistic modes
 - [x] Smooth transitions between view modes
+- [x] Time control slider with intuitive speed adjustment
 - [ ] Scale controls for distance/size representation
-- [ ] Time controls (pause, speed up, slow down)
 - [ ] Information panels for celestial bodies
 - [ ] Camera controls for viewing angle
 - [ ] Dynamic "zoom to scale" feature
+- [ ] Pause/resume controls
+- [ ] Preset speed buttons
 
 ### Educational Features
 - [ ] Comparison mode for orbit shapes
@@ -65,15 +68,21 @@ orbital/
 
 ## Technical Implementation
 
-### Version 0.2.1 Changes
+### Version 0.2.2 Changes
 The current implementation adds:
-- Coordinated transition system for mode changes
+- Interactive time control system:
+  - Slider-based speed adjustment
+  - Linear progression from 4 minutes to 12 seconds per Earth orbit
+  - Intuitive time display showing minutes/seconds per orbit
+  - Consistent relative orbital periods across speed range
+- Coordinated transition system for mode changes:
   - Separate handling of opacity, size, and position updates
   - Synchronized transition timings
   - Prevention of visual glitches during mode switches
-- Enhanced Planet class with transition-aware properties
-- Transition state management in SolarSystem class
-- CSS-based smooth transitions for visual properties
+- Enhanced Planet class with:
+  - Transition-aware properties
+  - Improved time scaling system
+  - Consistent speed preservation between mode switches
 - Optimized animation performance during mode changes
 - Improved visual consistency during view switches
 

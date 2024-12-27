@@ -1,44 +1,59 @@
 /**
- * Orbital Solar System v0.2.1
- * Added smooth transitions between modes
+ * Orbital Solar System v0.2.2
+ * Added smooth transitions between modes and speed control
  */
 
-const TIME_SCALE = {
-    simple: 1/12,    // 1 Earth orbit = 12 seconds
-    realistic: 1/31536000 // 1 second real time = 1 second astronomical
-};
+const MIN_EARTH_ORBIT_SECONDS = 240; // 4 minutes per orbit
+const MAX_EARTH_ORBIT_SECONDS = 12;  // 12 seconds per orbit
+
+function calculateTimeScale(sliderValue) {
+    // Linear interpolation between min and max orbit times
+    const ratio = sliderValue / 100;
+    const earthOrbitSeconds = MIN_EARTH_ORBIT_SECONDS + (MAX_EARTH_ORBIT_SECONDS - MIN_EARTH_ORBIT_SECONDS) * ratio;
+    return 1 / earthOrbitSeconds; // Convert period to frequency
+}
+
+function formatSpeedLabel(scale) {
+    // Convert scale to seconds per earth orbit
+    const secondsPerOrbit = 1 / scale;
+    if (secondsPerOrbit >= 60) {
+        return `${(secondsPerOrbit / 60).toFixed(1)}m/orbit`;
+    } else {
+        return `${secondsPerOrbit.toFixed(1)}s/orbit`;
+    }
+}
 
 const VIEW_MODES = {
     simple: {
         name: 'Simple View',
         planetScale: 1,
         orbitScale: 1,
-        timeScale: TIME_SCALE.simple,
+        timeScale: 1/60, // Default to 1 minute per orbit
         showOrbits: true,
         useEllipticalOrbits: false,
         planets: {
             mercury: { 
                 baseSize: 10,
                 baseOrbitRadius: 50,
-                period: 3,
+                period: 0.24,
                 color: '#A0522D'
             },
             venus: { 
                 baseSize: 15,
                 baseOrbitRadius: 90,
-                period: 7,
+                period: 0.62,
                 color: '#DEB887'
             },
             earth: { 
                 baseSize: 16,
                 baseOrbitRadius: 130,
-                period: 12,
+                period: 1.00,
                 color: '#4169E1'
             },
             mars: { 
                 baseSize: 12,
                 baseOrbitRadius: 170,
-                period: 22,
+                period: 1.88,
                 color: '#CD5C5C'
             }
         }
@@ -47,7 +62,7 @@ const VIEW_MODES = {
         name: 'Realistic View',
         planetScale: 0.6,
         orbitScale: 1.5,
-        timeScale: TIME_SCALE.realistic,
+        timeScale: 1/60, // Default to 1 minute per orbit
         showOrbits: true,
         useEllipticalOrbits: true,
         planets: {
@@ -99,7 +114,7 @@ class Planet {
         const planetConfig = mode.planets[this.name];
         this.size = planetConfig.baseSize * mode.planetScale;
         this.orbitRadius = planetConfig.baseOrbitRadius * mode.orbitScale;
-        this.period = planetConfig.period / mode.timeScale;
+        this.period = planetConfig.period;
         this.eccentricity = planetConfig.eccentricity || 0;
         this.color = planetConfig.color;
         this.basePeriod = planetConfig.period;
@@ -133,7 +148,8 @@ class Planet {
         this.lastUpdate = now;
         
         const angleSpeed = (2 * Math.PI) / this.period;
-        this.angle += angleSpeed * delta;
+        const scaledDelta = this.timeController ? this.timeController.getDelta(delta) : delta;
+        this.angle += angleSpeed * scaledDelta;
         
         this.updatePosition();
     }
@@ -184,8 +200,8 @@ class SolarSystem {
         this.currentMode = 'simple';
         this.planets = {};
         this.animationFrame = null;
-        this.timeScale = TIME_SCALE.simple;
-        this.isTransitioning = false;  // Add transition flag
+        this.timeController = null;
+        this.isTransitioning = false;
         this.initializePlanets();
     }
 
@@ -203,7 +219,7 @@ class SolarSystem {
             
             // Add transitioning class and pause updates
             solarSystem.classList.add('transitioning');
-            this.isTransitioning = true;  // Add flag to prevent updates
+            this.isTransitioning = true;
             
             // Quick fade out with opacity change only
             for (const planet of Object.values(this.planets)) {
@@ -217,6 +233,7 @@ class SolarSystem {
                 // Update sizes and orbits
                 for (const planet of Object.values(this.planets)) {
                     planet.updateMode(mode);
+                    planet.timeController = this.timeController;
                 }
                 
                 // Wait for orbit transition to complete before showing planets
@@ -239,8 +256,8 @@ class SolarSystem {
                             solarSystem.classList.remove('transitioning');
                         }, 300);
                     }, 50);
-                }, 800); // Match orbit transition duration
-            }, 150); // Just longer than fade out duration
+                }, 800);
+            }, 150);
 
             return true;
         }
@@ -248,7 +265,7 @@ class SolarSystem {
     }
 
     update(now) {
-        if (!this.isTransitioning) {  // Only update if not transitioning
+        if (!this.isTransitioning) {
             for (const planet of Object.values(this.planets)) {
                 planet.update(now);
             }
@@ -277,10 +294,31 @@ document.addEventListener('DOMContentLoaded', () => {
     solarSystem.start();
 
     const modeToggle = document.getElementById('orbit-mode');
+    const speedSlider = document.getElementById('speed-slider');
+    const speedLabel = document.getElementById('speed-label');
+
+    // Initialize speed from slider
+    const initialScale = calculateTimeScale(speedSlider.value);
+    solarSystem.timeController = new TimeController(initialScale);
+    speedLabel.textContent = formatSpeedLabel(initialScale);
+
+    // Set timeController for existing planets
+    for (const planet of Object.values(solarSystem.planets)) {
+        planet.timeController = solarSystem.timeController;
+    }
+
+    // Handle mode toggle
     modeToggle.addEventListener('change', (e) => {
         const newMode = e.target.checked ? 'realistic' : 'simple';
         if (solarSystem.setMode(newMode)) {
             modeToggle.nextElementSibling.textContent = VIEW_MODES[newMode].name;
         }
+    });
+
+    // Handle speed changes
+    speedSlider.addEventListener('input', (e) => {
+        const newScale = calculateTimeScale(e.target.value);
+        solarSystem.timeController.setScale(newScale);
+        speedLabel.textContent = formatSpeedLabel(newScale);
     });
 });
