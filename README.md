@@ -4,12 +4,27 @@ A web-based visualization of our solar system built with plain HTML, CSS, and mi
 
 ## Current State
 
-Version 0.1.1 implements:
+Version 0.1.2 implements:
+- Improved project structure with separate CSS and JS files
+- CSS variables for easier customization
+- Basic JavaScript initialization
 - Inner planets (Mercury through Mars)
 - Simplified circular orbits
 - Basic planetary motion using CSS animations
 - Relative orbit distances (not to scale)
 - Minimal dependencies - pure HTML/CSS implementation
+
+## Directory Structure
+```plaintext
+orbital/
+├── index.html
+├── css/
+│   └── style.css
+├── js/
+│   └── script.js
+├── README.md
+└── LICENSE
+```
 
 ## Project Goals
 
