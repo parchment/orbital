@@ -86,4 +86,22 @@ class SolarSystem {
 document.addEventListener('DOMContentLoaded', () => {
     const solarSystem = new SolarSystem();
     solarSystem.start();
+
+    // Mode switch handling
+    const modeToggle = document.getElementById('orbit-mode');
+    modeToggle.addEventListener('change', (e) => {
+        config.idealizedOrbits = !e.target.checked;
+        const mode = config.idealizedOrbits ? 'Simple' : 'Realistic';
+        console.log(`Switched to ${mode} View`);
+        
+        // Update the label text
+        modeToggle.nextElementSibling.textContent = `${mode} View`;
+        
+        // Add a temporary visual indicator
+        document.querySelectorAll('.orbit').forEach(orbit => {
+            orbit.style.borderColor = config.idealizedOrbits ? 
+                'rgba(255, 255, 255, 0.1)' : 
+                'rgba(255, 100, 100, 0.2)';
+        });
+    });
 });

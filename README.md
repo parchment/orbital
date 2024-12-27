@@ -4,7 +4,7 @@ A web-based visualization of our solar system built with plain HTML, CSS, and mi
 
 ## Current State
 
-Version 0.1.3 implements:
+Version 0.1.4 implements:
 - Improved project structure with separate CSS and JS files
 - CSS variables for easier customization
 - JavaScript-based orbital motion system
@@ -13,6 +13,7 @@ Version 0.1.3 implements:
 - Groundwork for elliptical orbits
 - Relative orbit distances (not to scale)
 - Minimal dependencies - pure HTML/CSS/JS implementation
+- Mode toggle infrastructure for switching between simple/realistic views
 
 ## Directory Structure
 ```plaintext
