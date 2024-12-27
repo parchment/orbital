@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+		<meta name="description" content="v0.1.1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orbital</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .solar-system {
+            position: relative;
+            width: 600px;
+            height: 600px;
+        }
+
+        .sun {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background: #FFD700;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 50px #FFD700;
+        }
+
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Mercury */
+        #mercury-orbit {
+            width: 100px;
+            height: 100px;
+            animation: orbit 3s linear infinite;
+        }
+
+        #mercury {
+            width: 10px;
+            height: 10px;
+            background: #A0522D;
+            left: 100%;
+        }
+
+        /* Venus */
+        #venus-orbit {
+            width: 180px;
+            height: 180px;
+            animation: orbit 7s linear infinite;
+        }
+
+        #venus {
+            width: 15px;
+            height: 15px;
+            background: #DEB887;
+            left: 100%;
+        }
+
+        /* Earth */
+        #earth-orbit {
+            width: 260px;
+            height: 260px;
+            animation: orbit 12s linear infinite;
+        }
+
+        #earth {
+            width: 16px;
+            height: 16px;
+            background: #4169E1;
+            left: 100%;
+        }
+
+        /* Mars */
+        #mars-orbit {
+            width: 340px;
+            height: 340px;
+            animation: orbit 22s linear infinite;
+        }
+
+        #mars {
+            width: 12px;
+            height: 12px;
+            background: #CD5C5C;
+            left: 100%;
+        }
+
+        @keyframes orbit {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="solar-system">
+        <div class="sun"></div>
+        
+        <!-- Mercury -->
+        <div class="orbit" id="mercury-orbit">
+            <div class="planet" id="mercury"></div>
+        </div>
+        
+        <!-- Venus -->
+        <div class="orbit" id="venus-orbit">
+            <div class="planet" id="venus"></div>
+        </div>
+        
+        <!-- Earth -->
+        <div class="orbit" id="earth-orbit">
+            <div class="planet" id="earth"></div>
+        </div>
+        
+        <!-- Mars -->
+        <div class="orbit" id="mars-orbit">
+            <div class="planet" id="mars"></div>
+        </div>
+    </div>
+</body>
+</html>
