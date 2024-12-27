@@ -4,8 +4,9 @@ A web-based visualization of our solar system built with plain HTML, CSS, and mi
 
 ## Current State
 
-Version 0.2.0 implements:
+Version 0.2.1 implements:
 - Refactored codebase for better mode switching and configuration
+- Smooth transitions between view modes with coordinated animations
 - Centralized configuration system for different view modes
 - Proper astronomical time scaling
 - Separate visual and time controls
@@ -28,8 +29,9 @@ orbital/
 
 ## Project Goals
 
-### Accuracy Features
+### Visual Features
 - [x] Basic circular orbital motion
+- [x] Smooth mode transitions with coordinated animations
 - [x] Correct orbital periods and speeds
 - [ ] Complete solar system (all planets + dwarf planets)
 - [ ] Accurate relative distances between orbits
@@ -47,6 +49,7 @@ orbital/
 
 ### Interactive Features
 - [x] Toggle between idealized (circular) and realistic modes
+- [x] Smooth transitions between view modes
 - [ ] Scale controls for distance/size representation
 - [ ] Time controls (pause, speed up, slow down)
 - [ ] Information panels for celestial bodies
@@ -62,16 +65,17 @@ orbital/
 
 ## Technical Implementation
 
-### Version 0.2.0 Changes
+### Version 0.2.1 Changes
 The current implementation adds:
-- Centralized configuration system via VIEW_MODES object
-- Astronomical time scaling with TIME_SCALE constants
-- Enhanced Planet class with mode-aware properties
-- New TimeController class for simulation management
-- Separation of visual and orbital properties
-- Mode-specific configurations for planet characteristics
-- Proper orbital period relationships
-- Eccentricity values for future elliptical orbits
+- Coordinated transition system for mode changes
+  - Separate handling of opacity, size, and position updates
+  - Synchronized transition timings
+  - Prevention of visual glitches during mode switches
+- Enhanced Planet class with transition-aware properties
+- Transition state management in SolarSystem class
+- CSS-based smooth transitions for visual properties
+- Optimized animation performance during mode changes
+- Improved visual consistency during view switches
 
 ## Real-World Accuracy Notes
 

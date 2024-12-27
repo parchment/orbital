@@ -51,19 +51,6 @@ body {
     transform: translateX(16px);
 }
 
-:root {
-    --sun-size: 50px;
-    --sun-color: #FFD700;
-    --mercury-size: 10px;
-    --mercury-color: #A0522D;
-    --venus-size: 15px;
-    --venus-color: #DEB887;
-    --earth-size: 16px;
-    --earth-color: #4169E1;
-    --mars-size: 12px;
-    --mars-color: #CD5C5C;
-}
-
 .solar-system {
     position: relative;
     width: 600px;
@@ -74,12 +61,12 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: var(--sun-size);
-    height: var(--sun-size);
-    background: var(--sun-color);
+    width: 50px;
+    height: 50px;
+    background: #FFD700;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 50px var(--sun-color);
+    box-shadow: 0 0 50px #FFD700;
 }
 
 .orbit {
@@ -89,6 +76,9 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     transform: translate(-50%, -50%);
+    transition: width 0.8s ease-in-out, 
+                height 0.8s ease-in-out, 
+                border-color 0.3s;
 }
 
 .planet {
@@ -96,6 +86,18 @@ body {
     border-radius: 50%;
     top: 50%;
     left: 50%;
+    transition: width 0.8s ease-in-out, 
+                height 0.8s ease-in-out, 
+                background-color 0.3s,
+                opacity 0.05s ease-out;  /* Quick fade out */
+}
+
+/* Class added during transition */
+.transitioning .planet {
+    transition: width 0.8s ease-in-out, 
+                height 0.8s ease-in-out, 
+                background-color 0.3s,
+                opacity 0.3s ease-in;  /* Slower fade in */
 }
 
 /* Mercury */
@@ -105,9 +107,9 @@ body {
 }
 
 #mercury {
-    width: var(--mercury-size);
-    height: var(--mercury-size);
-    background: var(--mercury-color);
+    width: 10px;
+    height: 10px;
+    background: #A0522D;
 }
 
 /* Venus */
@@ -117,9 +119,9 @@ body {
 }
 
 #venus {
-    width: var(--venus-size);
-    height: var(--venus-size);
-    background: var(--venus-color);
+    width: 15px;
+    height: 15px;
+    background: #DEB887;
 }
 
 /* Earth */
@@ -129,9 +131,9 @@ body {
 }
 
 #earth {
-    width: var(--earth-size);
-    height: var(--earth-size);
-    background: var(--earth-color);
+    width: 16px;
+    height: 16px;
+    background: #4169E1;
 }
 
 /* Mars */
@@ -141,7 +143,7 @@ body {
 }
 
 #mars {
-    width: var(--mars-size);
-    height: var(--mars-size);
-    background: var(--mars-color);
+    width: 12px;
+    height: 12px;
+    background: #CD5C5C;
 }
