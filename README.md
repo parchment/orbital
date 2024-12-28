@@ -4,7 +4,7 @@ A web-based visualization of our solar system built with plain HTML, CSS, and Ja
 
 ## Current State
 
-Version 0.2.4 implements:
+Version 0.3.0 implements:
 - Modular architecture with separated concerns
 - Interactive time control slider for orbit speed adjustment
 - Visualization-focused time scaling (4 minutes to 12 seconds per Earth orbit)
@@ -17,6 +17,10 @@ Version 0.2.4 implements:
 - Precise elliptical orbit visualization with SVG paths
 - All inner planets (Mercury through Mars)
 - Mode toggle between simple and realistic views
+- True relative sizing of planets in realistic mode
+- Accurate orbital distances (scaled by AU) in realistic mode
+- Interactive zoom control for realistic mode
+- Consistent centered positioning in both modes
 
 ## Project Structure
 
@@ -26,10 +30,10 @@ orbital/
 ├── css/
 │   └── style.css
 ├── js/
-│   ├── constants.js     (Configuration and constants)
+│   ├── constants.js    (Configuration and constants)
 │   ├── time.js         (Time management)
 │   ├── planet.js       (Planet visualization and physics)
-│   ├── system.js (Overall system management)
+│   ├── system.js       (Overall system management)
 │   └── script.js       (Entry point and initialization)
 ├── README.md
 └── LICENSE
@@ -37,12 +41,12 @@ orbital/
 
 ### Module Organization
 
-The project now follows a modular architecture with clear separation of concerns:
+The project follows a modular architecture with clear separation of concerns:
 
 - **constants.js**: Central configuration store
   - Time constants
   - Orbital parameters
-  - View mode configurations
+  - View mode configurations with realistic proportions
   - Calculation constants
   - Transition timing values
 
@@ -69,6 +73,7 @@ The project now follows a modular architecture with clear separation of concerns
   - Event handling
   - User interface controls
   - System bootstrapping
+  - Zoom control management
 
 ## Features
 
@@ -78,19 +83,19 @@ The project now follows a modular architecture with clear separation of concerns
 - [x] Correct orbital periods and speeds
 - [x] Elliptical orbits with proper Keplerian motion
 - [ ] Complete solar system (all planets + dwarf planets)
-- [ ] Accurate relative distances between orbits
-- [ ] Accurate planet sizes (with toggle for enhanced visibility)
+- [x] Accurate relative distances between orbits
+- [x] Accurate planet sizes (with toggle for enhanced visibility)
 - [x] Proper orbital inclinations and eccentricities
 - [ ] Planetary axial tilts
 
 ### Interactive Features
-- [x] Toggle between idealized (circular) and realistic modes
+- [x] Toggle between idealized (simple) and realistic modes
 - [x] Smooth transitions between view modes
 - [x] Time control slider with intuitive speed adjustment
-- [ ] Scale controls for distance/size representation
+- [x] Scale controls for realistic mode visualization
 - [ ] Information panels for celestial bodies
 - [ ] Camera controls for viewing angle
-- [ ] Dynamic "zoom to scale" feature
+- [x] Dynamic zoom feature for realistic mode
 - [ ] Pause/resume controls
 - [ ] Preset speed buttons
 
@@ -103,31 +108,34 @@ The project now follows a modular architecture with clear separation of concerns
 
 ## Technical Implementation
 
-### Version 0.2.4 Changes
+### Version 0.3.0 Changes
 The current implementation adds:
-- Modular codebase organization:
-  - Separated concerns into distinct modules
-  - Clear module responsibilities
-  - Improved code maintainability
-  - Better testing capabilities
-- Enhanced configuration management:
-  - Centralized constants
-  - Organized parameter groups
-  - Easy customization points
-- Improved transition handling:
-  - Coordinated animations
-  - Smooth mode changes
-  - Better state management
+- Realistic proportions:
+  - True relative planet sizes
+  - Accurate orbital distances (AU)
+  - Proper scaling between bodies
+- Enhanced mode switching:
+  - Smooth transitions
+  - No initial transition flicker
+  - Maintained centering
+- Interactive zoom control:
+  - Dynamic scaling in realistic mode
+  - Range from 25% to 100%
+  - Automatic zoom adjustment on mode switch
+- Improved positioning:
+  - Consistent center point
+  - Transform origin handling
+  - Proper scaling around center
 
 ### Real-World Accuracy
 
 Key solar system characteristics implemented:
 
 1. Orbital Distances (AU from Sun)
-   - Mercury: 0.4
-   - Venus: 0.7
-   - Earth: 1.0
-   - Mars: 1.5
+   - Mercury: 0.387
+   - Venus: 0.723
+   - Earth: 1.000
+   - Mars: 1.524
 
 2. Orbital Periods (Earth years)
    - Mercury: 0.24
@@ -140,6 +148,12 @@ Key solar system characteristics implemented:
    - Venus: 0.007 (most circular)
    - Earth: 0.017
    - Mars: 0.093
+
+4. Relative Planet Sizes (Earth = 1)
+   - Mercury: 0.383
+   - Venus: 0.950
+   - Earth: 1.000
+   - Mars: 0.532
 
 ## Getting Started
 
@@ -155,6 +169,7 @@ The application uses modern JavaScript features including:
 - CSS Grid
 - RequestAnimationFrame
 - SVG Manipulation
+- CSS Transforms and Transitions
 
 Requires a modern browser with support for these features.
 

@@ -1,103 +1,59 @@
 body {
     margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 0;
     background: #000;
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.solar-system {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    width: 800px;   /* Simple mode size */
+    height: 800px;
+}
+
+.solar-system:not(.simple-mode) {
+    width: 1600px;
+    height: 1600px;
+    transform: translate(-50%, -50%) scale(0.25); /* Initial realistic mode zoom */
+}
+
+/* Override transform during transitions */
+.transitioning.solar-system {
+    transition: transform 0.8s ease-in-out, width 0.8s ease-in-out, height 0.8s ease-in-out;
 }
 
 .controls {
     position: fixed;
     top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     gap: 16px;
     color: rgba(255, 255, 255, 0.7);
     font-family: system-ui, -apple-system, sans-serif;
     font-size: 14px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 8px;
 }
 
-.mode-switch {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.speed-control {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.speed-slider {
-    appearance: none;
-    width: 120px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.speed-slider::-webkit-slider-thumb {
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.speed-slider::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-}
-
-#speed-label {
-    min-width: 60px;
-}
-
-.mode-toggle {
-    appearance: none;
-    width: 36px;
-    height: 20px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    position: relative;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.mode-toggle:checked {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.mode-toggle::before {
-    content: "";
+/* Center simple mode */
+.simple-mode {
     position: absolute;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: white;
-    top: 2px;
-    left: 2px;
-    transition: transform 0.3s;
-}
-
-.mode-toggle:checked::before {
-    transform: translateX(16px);
-}
-
-.solar-system {
-    position: relative;
-    width: 600px;
-    height: 600px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .sun {
@@ -112,81 +68,119 @@ body {
     box-shadow: 0 0 50px #FFD700;
 }
 
-.orbit {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.8s ease-in-out, 
-                height 0.8s ease-in-out, 
-                border-color 0.3s;
-}
-
-.planet {
-    position: absolute;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transition: width 0.8s ease-in-out, 
-                height 0.8s ease-in-out, 
-                background-color 0.3s,
-                opacity 0.05s ease-out;  /* Quick fade out */
-}
-
-/* Class added during transition */
-.transitioning .planet {
-    transition: width 0.8s ease-in-out, 
-                height 0.8s ease-in-out, 
-                background-color 0.3s,
-                opacity 0.3s ease-in;  /* Slower fade in */
+.solar-system:not(.simple-mode) .sun {
+    width: 120px;
+    height: 120px;
 }
 
 /* Mercury */
-#mercury-orbit {
-    width: 100px;
-    height: 100px;
-}
-
 #mercury {
     width: 10px;
     height: 10px;
     background: #A0522D;
 }
 
-/* Venus */
-#venus-orbit {
-    width: 180px;
-    height: 180px;
+.solar-system:not(.simple-mode) #mercury {
+    width: 3.2px;
+    height: 3.2px;
 }
 
+#mercury-orbit {
+    width: 100px;
+    height: 100px;
+}
+
+.solar-system:not(.simple-mode) #mercury-orbit {
+    width: 154.8px;
+    height: 154.8px;
+}
+
+/* Venus */
 #venus {
     width: 15px;
     height: 15px;
     background: #DEB887;
 }
 
-/* Earth */
-#earth-orbit {
-    width: 260px;
-    height: 260px;
+.solar-system:not(.simple-mode) #venus {
+    width: 8.1px;
+    height: 8.1px;
 }
 
+#venus-orbit {
+    width: 180px;
+    height: 180px;
+}
+
+.solar-system:not(.simple-mode) #venus-orbit {
+    width: 289.2px;
+    height: 289.2px;
+}
+
+/* Earth */
 #earth {
     width: 16px;
     height: 16px;
     background: #4169E1;
 }
 
+.solar-system:not(.simple-mode) #earth {
+    width: 8.5px;
+    height: 8.5px;
+}
+
+#earth-orbit {
+    width: 260px;
+    height: 260px;
+}
+
+.solar-system:not(.simple-mode) #earth-orbit {
+    width: 400px;
+    height: 400px;
+}
+
 /* Mars */
+#mars {
+    width: 12px;
+    height: 12px;
+    background: #CD5C5C;
+}
+
+.solar-system:not(.simple-mode) #mars {
+    width: 4.5px;
+    height: 4.5px;
+}
+
 #mars-orbit {
     width: 340px;
     height: 340px;
 }
 
-#mars {
-    width: 12px;
-    height: 12px;
-    background: #CD5C5C;
+.solar-system:not(.simple-mode) #mars-orbit {
+    width: 609.6px;
+    height: 609.6px;
+}
+
+/* Shared styles */
+.planet {
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+}
+
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Only add transitions when intentionally changing modes */
+.transitioning .planet,
+.transitioning .orbit,
+.transitioning .sun {
+    transition: all 0.8s ease-in-out;
 }

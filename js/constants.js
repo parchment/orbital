@@ -77,39 +77,35 @@ export const VIEW_MODES = {
     },
     realistic: {
         name: 'Realistic View',
-        planetScale: 0.6,
-        orbitScale: 1.5,
-        timeScale: 1/60, // Default to 1 minute per orbit
+        planetScale: 1,
+        orbitScale: 4,
+        timeScale: 1/60,
         showOrbits: true,
         useEllipticalOrbits: true,
         planets: {
             mercury: {
-                baseSize: 4.9,
-                baseOrbitRadius: 40,
+                baseSize: 3.2,    // 0.383 × Earth size
+                baseOrbitRadius: 38.7, // 0.387 AU
                 period: 0.24,
-                color: '#A0522D',
-                eccentricity: 0.206
+                color: '#A0522D'
             },
             venus: {
-                baseSize: 12.1,
-                baseOrbitRadius: 70,
+                baseSize: 8.1,    // 0.950 × Earth size
+                baseOrbitRadius: 72.3, // 0.723 AU
                 period: 0.62,
-                color: '#DEB887',
-                eccentricity: 0.007
+                color: '#DEB887'
             },
             earth: {
-                baseSize: 12.7,
-                baseOrbitRadius: 100,
+                baseSize: 8.5,    // Reference: 8.5px
+                baseOrbitRadius: 100,  // Reference: 1 AU = 100px
                 period: 1.00,
-                color: '#4169E1',
-                eccentricity: 0.017
+                color: '#4169E1'
             },
             mars: {
-                baseSize: 6.8,
-                baseOrbitRadius: 150,
+                baseSize: 4.5,    // 0.532 × Earth size
+                baseOrbitRadius: 152.4, // 1.524 AU
                 period: 1.88,
-                color: '#CD5C5C',
-                eccentricity: 0.093
+                color: '#CD5C5C'
             }
         }
     }
