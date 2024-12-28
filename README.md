@@ -4,7 +4,8 @@ A web-based visualization of our solar system built with plain HTML, CSS, and Ja
 
 ## Current State
 
-Version 0.2.3 implements:
+Version 0.2.4 implements:
+- Modular architecture with separated concerns
 - Interactive time control slider for orbit speed adjustment
 - Visualization-focused time scaling (4 minutes to 12 seconds per Earth orbit)
 - Linear speed progression for intuitive control
@@ -17,19 +18,59 @@ Version 0.2.3 implements:
 - All inner planets (Mercury through Mars)
 - Mode toggle between simple and realistic views
 
-## Directory Structure
+## Project Structure
+
 ```plaintext
 orbital/
 ├── index.html
 ├── css/
 │   └── style.css
 ├── js/
-│   └── script.js
+│   ├── constants.js     (Configuration and constants)
+│   ├── time.js         (Time management)
+│   ├── planet.js       (Planet visualization and physics)
+│   ├── system.js (Overall system management)
+│   └── script.js       (Entry point and initialization)
 ├── README.md
 └── LICENSE
 ```
 
-## Project Goals
+### Module Organization
+
+The project now follows a modular architecture with clear separation of concerns:
+
+- **constants.js**: Central configuration store
+  - Time constants
+  - Orbital parameters
+  - View mode configurations
+  - Calculation constants
+  - Transition timing values
+
+- **time.js**: Time management module
+  - Time scaling controls
+  - Pause/resume functionality
+  - Delta time calculations
+  - Speed adjustments
+
+- **planet.js**: Planet management
+  - Individual planet visualization
+  - Orbital calculations
+  - SVG path generation
+  - Position updates
+
+- **system.js**: System coordinator
+  - Planet initialization
+  - Mode transitions
+  - Animation management
+  - System-wide updates
+
+- **script.js**: Main entry point
+  - DOM initialization
+  - Event handling
+  - User interface controls
+  - System bootstrapping
+
+## Features
 
 ### Visual Features
 - [x] Basic circular orbital motion
@@ -41,13 +82,6 @@ orbital/
 - [ ] Accurate planet sizes (with toggle for enhanced visibility)
 - [x] Proper orbital inclinations and eccentricities
 - [ ] Planetary axial tilts
-
-### Moon Systems
-- [ ] Earth-Moon system
-- [ ] Mars and its moons (Phobos, Deimos)
-- [ ] Jupiter's Galilean moons
-- [ ] Saturn's major moons
-- [ ] "Zoom to detail" feature for examining moon systems
 
 ### Interactive Features
 - [x] Toggle between idealized (circular) and realistic modes
@@ -69,23 +103,23 @@ orbital/
 
 ## Technical Implementation
 
-### Version 0.2.7 Changes
+### Version 0.2.4 Changes
 The current implementation adds:
-- Accurate Keplerian orbital mechanics:
-  - True elliptical orbits using polar form equations
-  - Varying orbital speeds following Kepler's Second Law
-  - Proper orbital inclinations and orientations
-- Enhanced orbit visualization:
-  - SVG-based orbit paths calculated from orbital parameters
-  - 360-point path approximation for smooth curves
-  - Smooth transitions between circular and elliptical modes
-  - Proper orbital alignment with focal points
-- Improved animation performance:
-  - Optimized path calculation and updates
-  - Smooth CSS transitions for mode changes
-  - Efficient SVG path morphing
+- Modular codebase organization:
+  - Separated concerns into distinct modules
+  - Clear module responsibilities
+  - Improved code maintainability
+  - Better testing capabilities
+- Enhanced configuration management:
+  - Centralized constants
+  - Organized parameter groups
+  - Easy customization points
+- Improved transition handling:
+  - Coordinated animations
+  - Smooth mode changes
+  - Better state management
 
-## Real-World Accuracy Notes
+### Real-World Accuracy
 
 Key solar system characteristics implemented:
 
@@ -94,26 +128,35 @@ Key solar system characteristics implemented:
    - Venus: 0.7
    - Earth: 1.0
    - Mars: 1.5
-   - Jupiter: 5.2
-   - Saturn: 9.5
-   - Uranus: 19.2
-   - Neptune: 30.1
 
 2. Orbital Periods (Earth years)
    - Mercury: 0.24
    - Venus: 0.62
    - Earth: 1.00
    - Mars: 1.88
-   - Jupiter: 11.86
-   - Saturn: 29.46
-   - Uranus: 84.01
-   - Neptune: 164.79
 
-3. Orbital Eccentricities (now accurately visualized)
+3. Orbital Eccentricities
    - Mercury: 0.206 (most eccentric)
    - Venus: 0.007 (most circular)
    - Earth: 0.017
    - Mars: 0.093
+
+## Getting Started
+
+1. Clone the repository
+2. No build process required - pure HTML, CSS, and JavaScript
+3. Serve the files using any web server
+4. Open index.html in a modern browser
+
+## Browser Support
+
+The application uses modern JavaScript features including:
+- ES6 Modules
+- CSS Grid
+- RequestAnimationFrame
+- SVG Manipulation
+
+Requires a modern browser with support for these features.
 
 ## License
 
